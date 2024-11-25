@@ -1,13 +1,12 @@
-import { Colors, Fonts } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import {
   Text,
   Pressable,
-  PressableProps,
   StyleSheet,
   StyleProp,
   ViewStyle,
 } from "react-native";
+import { Colors, Fonts } from "../styles/global-styles";
 
 interface Props {
   icon?: keyof typeof Ionicons.glyphMap;

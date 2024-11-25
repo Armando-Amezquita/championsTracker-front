@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 import { MainContainerView } from "@/presentation/components/theme/MainContainerView";
 import { CustomButton } from "@/presentation/components/theme/CustomButton";
 import { ChampionIcon } from "@/presentation/plugins/Icon";
-import { Colors } from "@/constants/Colors";
-import { useRouter } from "expo-router";
+import { Colors } from "@/presentation/components/styles/global-styles";
 
 const Welcome = () => {
   const navigation = useRouter();

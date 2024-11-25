@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import {
   View,
@@ -7,8 +8,7 @@ import {
   TextInput,
   KeyboardTypeOptions,
 } from "react-native";
-import { useRef, useState } from "react";
-import { Colors, Fonts } from "@/constants/Colors";
+import { Colors, Fonts } from "../styles/global-styles";
 
 interface Props extends TextInputProps {
   label?: string;
