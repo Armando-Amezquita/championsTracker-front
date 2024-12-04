@@ -4,6 +4,7 @@ const App = () => {
   return (
     <Stack
       screenOptions={{
+        animation: "fade",
         headerShown: false,
       }}
     />

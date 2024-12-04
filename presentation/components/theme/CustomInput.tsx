@@ -7,11 +7,14 @@ import {
   StyleSheet,
   TextInput,
   KeyboardTypeOptions,
+  Platform,
+  TextStyle,
 } from "react-native";
-import { Colors, Fonts } from "../styles/global-styles";
+import { Colors, Fonts } from "../../styles/global-styles";
 
 interface Props extends TextInputProps {
   label?: string;
+  styleLabel?: TextStyle;
   iconLeft?: keyof typeof Ionicons.glyphMap;
   iconRight?: keyof typeof Ionicons.glyphMap;
   value: string;
@@ -24,6 +27,7 @@ export const CustomInput = ({
   iconLeft,
   iconRight,
   label = "",
+  styleLabel,
   value = "",
   keyboardType = "default",
   isPassword = false,
@@ -35,7 +39,7 @@ export const CustomInput = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}> {label} </Text>
+      <Text style={[styles.label, styleLabel]}> {label} </Text>
 
       <View
         style={{
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
   containerInput: {
     borderWidth: 1,
     borderRadius: 10,
-    padding: 12,
+    padding: Platform.OS === "ios" ? 12 : 6,
     display: "flex",
     justifyContent: "space-between",
     flexDirection: "row",

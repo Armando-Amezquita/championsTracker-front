@@ -1,67 +1,115 @@
-import { View, Text, StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
+import {
+  View,
+  Text,
+  FlatList,
+  useWindowDimensions,
+  Animated,
+} from "react-native";
+import { useRef, useState } from "react";
+import { useNavigation } from "expo-router";
 import { MainContainerView } from "@/presentation/components/theme/MainContainerView";
 import { CustomButton } from "@/presentation/components/theme/CustomButton";
-import { ChampionIcon } from "@/presentation/plugins/Icon";
-import { Colors } from "@/presentation/components/styles/global-styles";
+import { FrontSlide } from "@/presentation/components/getAdditionalInformationUser/FrontSlide";
+import { StepOne } from "@/presentation/components/welcome/StepOne";
 
-const Welcome = () => {
-  const navigation = useRouter();
+const getAllInformationUserItems = [
+  { id: "1", name: "Slide 1" },
+  { id: "2", name: "Slide 2" },
+  { id: "3", name: "Slide 3" },
+];
+
+const WelcomeForm = () => {
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
+  const navigate = useNavigation();
+  const { width } = useWindowDimensions();
+  const opacity = useRef(new Animated.Value(1)).current;
+
+  const scrollToSlide = (index: number) => {
+    if (!flatListRef.current) return;
+    flatListRef.current.scrollToIndex({ index, animated: true });
+    setTimeout(() => setCurrentSlideIndex(index), 300);
+  };
+
+  const renderItem = ({ index }: { index: number }) => (
+    <Animated.View style={{ width, opacity }}>
+      {index === 0 && <FrontSlide />}
+      {index === 1 && <StepOne />}
+      {index === 2 && <Text>Tercer Slide</Text>}
+    </Animated.View>
+  );
 
   return (
     <MainContainerView>
-      <View style={styles.welcome}>
-        <View style={styles.welcomeHeader}>
-          <Text style={styles.welcomeBrand}>ChampionsTracker</Text>
-          <ChampionIcon name='star-half-outline' size={200} />
-        </View>
-        <View style={styles.welcomeActions}>
-          <CustomButton
-            label='Ingresar'
-            onPress={() => navigation.push("/auth/login")}
-            styleProp={styles.welcomeButtons}
-          />
-          <CustomButton
-            label='Registrarse'
-            onPress={() => navigation.push("/auth/singup")}
-            styleProp={[styles.welcomeButtons, styles.welcomeRegister]}
-          />
-        </View>
+      <FlatList
+        ref={flatListRef}
+        data={getAllInformationUserItems}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
+        renderItem={renderItem}
+        horizontal
+        pagingEnabled
+        scrollEnabled={false}
+      />
+
+      <View
+        style={{
+          position: "absolute",
+          bottom: 20,
+          alignSelf: "center",
+          width: "80%",
+        }}>
+        {currentSlideIndex === getAllInformationUserItems.length - 1 ? (
+          <>
+            <CustomButton
+              label='Anterior'
+              onPress={() => scrollToSlide(currentSlideIndex - 1)}
+              styleProp={{
+                position: "absolute",
+                bottom: 30,
+                left: 0,
+                width: 150,
+              }}
+            />
+            <CustomButton
+              label='Finalizar'
+              onPress={() => navigate.goBack()}
+              styleProp={{
+                position: "absolute",
+                bottom: 30,
+                right: 0,
+                width: 150,
+              }}
+            />
+          </>
+        ) : (
+          <>
+            {currentSlideIndex >= 1 && (
+              <CustomButton
+                label='Anterior'
+                onPress={() => scrollToSlide(currentSlideIndex - 1)}
+                styleProp={{
+                  position: "absolute",
+                  bottom: 30,
+                  left: 0,
+                  width: 150,
+                }}
+              />
+            )}
+            <CustomButton
+              label='Siguiente'
+              onPress={() => scrollToSlide(currentSlideIndex + 1)}
+              styleProp={{
+                position: "absolute",
+                bottom: 30,
+                right: 0,
+                width: 150,
+              }}
+            />
+          </>
+        )}
       </View>
     </MainContainerView>
   );
 };
 
-export default Welcome;
-
-const styles = StyleSheet.create({
-  welcome: {
-    flex: 1,
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    padding: 20,
-  },
-  welcomeHeader: {
-    alignItems: "center",
-    width: "100%",
-    gap: 40,
-  },
-  welcomeBrand: {
-    fontSize: 40,
-    color: Colors.primary,
-    fontStyle: "italic",
-    fontWeight: "bold",
-  },
-  welcomeActions: {
-    width: "100%",
-    flexDirection: "column",
-    gap: 20,
-  },
-  welcomeRegister: {
-    backgroundColor: Colors.light,
-  },
-  welcomeButtons: {
-    height: 60,
-    borderRadius: 40,
-  },
-});
+export default WelcomeForm;

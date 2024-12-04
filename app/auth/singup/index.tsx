@@ -4,7 +4,7 @@ import { CustomButton } from "@/presentation/components/theme/CustomButton";
 import { MyCheckbox } from "@/presentation/components/theme/CustomCheckbox";
 import { useSignUp } from "@/presentation/hooks/auth/signup/useSignUp";
 import { CustomFormView } from "@/presentation/components/theme/CustomFormView";
-import { Colors, Fonts } from "@/presentation/components/styles/global-styles";
+import { Colors, Fonts } from "@/presentation/styles/global-styles";
 
 const SingUp = () => {
   const {

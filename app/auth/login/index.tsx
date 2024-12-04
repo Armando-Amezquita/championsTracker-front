@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { CustomInput } from "@/presentation/components/theme/CustomInput";
 import { CustomButton } from "@/presentation/components/theme/CustomButton";
 import { CustomLink } from "@/presentation/components/theme/CustomLink";
 import { CustomFormView } from "@/presentation/components/theme/CustomFormView";
-import { Colors, Fonts } from "@/presentation/components/styles/global-styles";
+import { Colors, Fonts } from "@/presentation/styles/global-styles";
 
 const Login = () => {
+  const navigate = useRouter();
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
@@ -53,7 +55,7 @@ const Login = () => {
         />
         <CustomButton
           label='ingresar'
-          onPress={() => console.log("clic en login")}
+          onPress={() => navigate.replace("/welcome")}
           icon='football-outline'
         />
 

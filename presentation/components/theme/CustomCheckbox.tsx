@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "../styles/global-styles";
+import { Colors } from "../../styles/global-styles";
 
 interface Props {
   onChange: () => void;

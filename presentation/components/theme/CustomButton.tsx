@@ -6,7 +6,7 @@ import {
   StyleProp,
   ViewStyle,
 } from "react-native";
-import { Colors, Fonts } from "../styles/global-styles";
+import { Colors, Fonts } from "../../styles/global-styles";
 
 interface Props {
   icon?: keyof typeof Ionicons.glyphMap;
