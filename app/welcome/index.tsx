@@ -11,6 +11,7 @@ import { MainContainerView } from "@/presentation/components/theme/MainContainer
 import { CustomButton } from "@/presentation/components/theme/CustomButton";
 import { FrontSlide } from "@/presentation/components/getAdditionalInformationUser/FrontSlide";
 import { StepOne } from "@/presentation/components/welcome/StepOne";
+import { StepTwo } from "@/presentation/components/welcome/StepTwo";
 
 const getAllInformationUserItems = [
   { id: "1", name: "Slide 1" },
@@ -35,7 +36,7 @@ const WelcomeForm = () => {
     <Animated.View style={{ width, opacity }}>
       {index === 0 && <FrontSlide />}
       {index === 1 && <StepOne />}
-      {index === 2 && <Text>Tercer Slide</Text>}
+      {index === 2 && <StepTwo />}
     </Animated.View>
   );
 
@@ -63,7 +64,7 @@ const WelcomeForm = () => {
             <CustomButton
               label='Anterior'
               onPress={() => scrollToSlide(currentSlideIndex - 1)}
-              styleProp={{
+              stylePressable={{
                 position: "absolute",
                 bottom: 30,
                 left: 0,
@@ -73,7 +74,7 @@ const WelcomeForm = () => {
             <CustomButton
               label='Finalizar'
               onPress={() => navigate.goBack()}
-              styleProp={{
+              stylePressable={{
                 position: "absolute",
                 bottom: 30,
                 right: 0,
@@ -87,7 +88,7 @@ const WelcomeForm = () => {
               <CustomButton
                 label='Anterior'
                 onPress={() => scrollToSlide(currentSlideIndex - 1)}
-                styleProp={{
+                stylePressable={{
                   position: "absolute",
                   bottom: 30,
                   left: 0,
@@ -98,7 +99,7 @@ const WelcomeForm = () => {
             <CustomButton
               label='Siguiente'
               onPress={() => scrollToSlide(currentSlideIndex + 1)}
-              styleProp={{
+              stylePressable={{
                 position: "absolute",
                 bottom: 30,
                 right: 0,

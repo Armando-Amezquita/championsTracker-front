@@ -5,6 +5,7 @@ import {
   StyleSheet,
   StyleProp,
   ViewStyle,
+  TextStyle,
 } from "react-native";
 import { Colors, Fonts } from "../../styles/global-styles";
 
@@ -12,10 +13,17 @@ interface Props {
   icon?: keyof typeof Ionicons.glyphMap;
   label: string;
   onPress: () => void;
-  styleProp?: StyleProp<ViewStyle>;
+  stylePressable?: StyleProp<ViewStyle>;
+  styleText?: StyleProp<TextStyle>;
 }
 
-export const CustomButton = ({ label, icon, onPress, styleProp }: Props) => {
+export const CustomButton = ({
+  label,
+  icon,
+  onPress,
+  stylePressable,
+  styleText,
+}: Props) => {
   return (
     <Pressable
       onPress={onPress}
@@ -24,9 +32,9 @@ export const CustomButton = ({ label, icon, onPress, styleProp }: Props) => {
           backgroundColor: pressed ? Colors.primary + "90" : Colors.primary,
         },
         styles.button,
-        styleProp,
+        stylePressable,
       ]}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, styleText]}>{label}</Text>
 
       {icon && (
         <Ionicons
