@@ -55,7 +55,7 @@ const Login = () => {
         />
         <CustomButton
           label='ingresar'
-          onPress={() => navigate.replace("/welcome")}
+          onPress={() => navigate.replace("/auth/welcome")}
           icon='football-outline'
         />
 

@@ -15,7 +15,7 @@ export const StepTwo = () => {
     { label: "Organizador", id: "1", value: "organizer" },
     { label: "Jugador", id: "2", value: "player" },
     { label: "Capitan", id: "3", value: "captain" },
-    { label: "tutor", id: "3", value: "tutor" },
+    { label: "tutor", id: "4", value: "tutor" },
   ];
 
   return (
