@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { ChampionIcon } from "@/presentation/plugins/Icon";
-import { Colors } from "@/presentation/styles/global-styles";
+import { Colors, Fonts } from "@/presentation/styles/global-styles";
 import { Platform } from "react-native";
 
 interface ItemRoute {
@@ -23,7 +23,7 @@ const ListItemsRoutes: ItemRoute[] = [
     title: "Notificaciones",
     icon: "notifications-outline",
   },
-  { name: "menu/index", title: "Menu", icon: "grid-outline" },
+  { name: "explore/index", title: "Explorar", icon: "grid-outline" },
 ];
 
 export default function TabLayout() {
@@ -31,7 +31,11 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerStyle: { backgroundColor: Colors.dark },
-        headerTitleStyle: { color: Colors.primary },
+        headerTitleStyle: {
+          color: Colors.primary,
+          fontWeight: "bold",
+          fontSize: Fonts.large,
+        },
         tabBarActiveTintColor: Colors.primary,
         // headerShown: false,
         tabBarStyle: {
