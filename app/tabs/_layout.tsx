@@ -29,6 +29,7 @@ const ListItemsRoutes: ItemRoute[] = [
 export default function TabLayout() {
   return (
     <Tabs
+      initialRouteName='dashboard/index'
       screenOptions={{
         headerStyle: { backgroundColor: Colors.dark },
         headerTitleStyle: {
@@ -47,7 +48,67 @@ export default function TabLayout() {
         },
         // tabBarActiveBackgroundColor: Colors.primary,
       }}>
-      {ListItemsRoutes.map((itemMenu) => (
+      <Tabs.Screen
+        name='dashboard/index'
+        options={{
+          title: `Noticias`,
+          tabBarIcon: ({ color }) => (
+            <ChampionIcon size={28} name='home-outline' color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name='(tournamentStack)'
+        options={{
+          headerShown: false,
+          title: `Torneos`,
+          tabBarIcon: ({ color }) => (
+            <ChampionIcon size={28} name='football-outline' color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name='calendar/index'
+        options={{
+          title: `Calendario`,
+          tabBarIcon: ({ color }) => (
+            <ChampionIcon size={28} name='calendar-outline' color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name='notifications/index'
+        options={{
+          title: `Notificaciones`,
+          tabBarIcon: ({ color }) => (
+            <ChampionIcon
+              size={28}
+              name='notifications-outline'
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name='(exploreStack)'
+        options={{
+          headerShown: false,
+          title: `Explorar`,
+          tabBarIcon: ({ color }) => (
+            <ChampionIcon size={28} name='grid-outline' color={color} />
+          ),
+        }}
+      />
+    </Tabs>
+  );
+}
+
+{
+  /* {ListItemsRoutes.map((itemMenu) => (
         <Tabs.Screen
           key={itemMenu.name}
           name={itemMenu.name}
@@ -58,7 +119,5 @@ export default function TabLayout() {
             ),
           }}
         />
-      ))}
-    </Tabs>
-  );
+      ))} */
 }
