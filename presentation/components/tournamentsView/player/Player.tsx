@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const Tournaments = () => {
+const Player = () => {
   return (
     <View>
-      <Text>Tournaments</Text>
+      <Text>Player</Text>
     </View>
   );
 };
 
-export default Tournaments;
+export default Player;
