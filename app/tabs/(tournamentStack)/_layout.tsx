@@ -35,6 +35,18 @@ const TournamentStack = () => (
         // ),
       }}
     />
+    <Stack.Screen
+      name='player/[id]'
+      options={{
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name='team/[id]'
+      options={{
+        headerShown: false,
+      }}
+    />
   </Stack>
 );
 
