@@ -38,6 +38,16 @@ const TournamentStack = () => (
     <Stack.Screen
       name='player/[id]'
       options={{
+        // title: "Detalles del jugador",
+        // headerStyle: {
+        //   backgroundColor: Colors.dark,
+        // },
+        // headerTintColor: Colors.primary,
+        // headerBackTitle: "volver",
+        // headerTitleStyle: {
+        //   fontWeight: "bold",
+        //   fontSize: 22,
+        // },
         headerShown: false,
       }}
     />
