@@ -1,9 +1,12 @@
 import { View, Text, Pressable, Image, StyleSheet } from "react-native";
 import { Colors } from "@/presentation/styles/global-styles";
+import { router } from "expo-router";
 
 const CalendarDates = () => {
   return (
-    <Pressable style={styles.containerDate}>
+    <Pressable
+      onPress={() => router.push(`/tabs/gameRecordsView/${1}`)}
+      style={styles.containerDate}>
       <View
         style={{
           flexDirection: "row",

@@ -57,6 +57,12 @@ const TournamentStack = () => (
         headerShown: false,
       }}
     />
+    <Stack.Screen
+      name='gameRecordsView/[id]'
+      options={{
+        headerShown: false,
+      }}
+    />
   </Stack>
 );
 
