@@ -1,7 +1,9 @@
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { ChampionIcon } from "@/presentation/plugins/Icon";
 import { Colors, Fonts } from "@/presentation/styles/global-styles";
-import { Platform } from "react-native";
+import { ActivityIndicator, Platform, View } from "react-native";
+import { useEffect } from "react";
+import { useAuth } from "@/context/AuthProvider";
 
 interface ItemRoute {
   name: string;
@@ -27,6 +29,31 @@ const ListItemsRoutes: ItemRoute[] = [
 ];
 
 export default function TabLayout() {
+  const { userToken, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading) {
+      if (!userToken) {
+        router.replace("/auth/login");
+      }
+    }
+  }, [userToken, loading]);
+
+  if (loading) {
+    // Muestra un indicador de carga mientras se verifica la autenticación
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size='large' color={Colors.primary} />
+      </View>
+    );
+  }
+
+  if (!userToken) {
+    // No renderiza nada si no está autenticado (la redirección se encarga)
+    return null;
+  }
+
   return (
     <Tabs
       initialRouteName='dashboard/index'

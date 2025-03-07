@@ -2,13 +2,17 @@ import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+
 import { CustomInput } from "@/presentation/components/theme/CustomInput";
 import { CustomButton } from "@/presentation/components/theme/CustomButton";
 import { CustomLink } from "@/presentation/components/theme/CustomLink";
 import { CustomFormView } from "@/presentation/components/theme/CustomFormView";
 import { Colors, Fonts } from "@/presentation/styles/global-styles";
+import { useAuth } from "@/context/AuthProvider";
 
 const Login = () => {
+  const { login } = useAuth();
+
   const navigate = useRouter();
   const [loginForm, setLoginForm] = useState({
     username: "",
@@ -20,6 +24,26 @@ const Login = () => {
       ...prevForm,
       [field]: value,
     }));
+  };
+
+  const handleLogin = async () => {
+    // Simulación de lógica de autenticación (reemplazar con tu lógica real)
+    // Aquí deberías llamar a tu API de autenticación y obtener un token
+    // Esta es una SIMULACIÓN, necesitas integrarla con tu backend REAL
+    const simulatedToken = "este_es_un_token_simulado"; // Reemplaza con el token real
+    console.log("simulatedToken :>> ", simulatedToken);
+
+    // Verifica si la autenticación fue exitosa (aquí siempre es exitosa en la simulación)
+    if (simulatedToken.length) {
+      // Llama a la función login del contexto para guardar el token y establecer al usuario como autenticado
+      await login(simulatedToken);
+      // Redirige a la pantalla de bienvenida
+      navigate.push("/auth/welcome"); // Redirige a las tabs si la autenticación es exitosa
+    } else {
+      // Maneja el error de autenticación (muestra un mensaje de error, etc.)
+      console.log("Error de autenticación");
+      // Puedes mostrar un mensaje de error al usuario aquí
+    }
   };
 
   return (
@@ -55,7 +79,7 @@ const Login = () => {
         />
         <CustomButton
           label='ingresar'
-          onPress={() => navigate.replace("/auth/welcome")}
+          onPress={handleLogin}
           icon='football-outline'
         />
 
