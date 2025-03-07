@@ -4,9 +4,17 @@ import { Colors, Fonts, Radius } from "@/presentation/styles/global-styles";
 import { MainContainerView } from "@/presentation/components/theme/MainContainerView";
 import { ChampionIcon } from "@/presentation/plugins/Icon";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
+import { useAuth } from "@/context/AuthProvider";
+("@/app/auth/login");
 
 const IndexTournament = () => {
+  const { logout } = useAuth();
+  const handleSignUp = async () => {
+    await logout();
+    router.replace("/auth/login");
+  };
+
   const sportsData = [
     { id: "1", name: "Fútbol", icon: "football-outline", navigateTo: "soccer" },
     { id: "2", name: "Baloncesto", icon: "basketball" },
@@ -20,6 +28,9 @@ const IndexTournament = () => {
       <View style={{ flex: 1, alignItems: "center", padding: 10 }}>
         <Text style={styles.titleTournament}>
           ¿Qué deporte te gustaría ver hoy?
+        </Text>
+        <Text onPress={handleSignUp} style={{ color: "white" }}>
+          Salir
         </Text>
 
         <View>
