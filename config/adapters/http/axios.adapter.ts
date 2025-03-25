@@ -18,15 +18,31 @@ export class AxiosAdapter implements HttpAdapter {
     });
   }
 
-  async get<T>(
-    url: string,
-    options?: Record<string, unknown> | undefined
-  ): Promise<T> {
+  async get<T>(url: string, options?: Record<string, unknown>): Promise<T> {
     try {
       const { data } = await this.axiosInstance.get(url, options);
       return data;
-    } catch (error) {
-      throw new Error(`Error fetching get: ${url}`);
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        throw error.response.data;
+      }
+      throw new Error(`Error fetching GET: ${url}`);
+    }
+  }
+
+  async post<T>(
+    url: string,
+    body: unknown,
+    options?: Record<string, unknown>
+  ): Promise<T> {
+    try {
+      const { data } = await this.axiosInstance.post(url, body, options);
+      return data;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        throw error.response.data;
+      }
+      throw new Error(`Error fetching POST: ${url}`);
     }
   }
 }

@@ -51,14 +51,14 @@ export const CustomInput = ({
           <View
             style={{
               borderColor: errorMessage
-                ? "red"
+                ? "#E97451"
                 : isActive
                 ? Colors.primary
                 : Colors.gray,
               ...styles.containerInput,
             }}>
             {iconLeft && (
-              <Ionicons name={iconLeft} size={24} col or={Colors.light} />
+              <Ionicons name={iconLeft} size={24} color={Colors.light} />
             )}
             <TextInput
               ref={inputRef}
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   errorText: {
-    color: "red",
+    color: "#E97451",
     fontSize: Fonts.small,
     marginTop: 2,
   },

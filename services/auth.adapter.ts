@@ -2,7 +2,8 @@
 // import { AxiosAdapter } from './http/axios.adapter';
 import { AxiosAdapter } from "../config/adapters/http/axios.adapter";
 
-const API_BASE_URL = "http://192.168.1.17:7002/api";
+const API_BASE_URL = "http://192.168.1.24:7002/api";
+// 192.168.1.20
 
 export const authFetcher = new AxiosAdapter({
   baseUrl: API_BASE_URL,

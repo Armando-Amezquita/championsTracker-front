@@ -1,22 +1,26 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+
 import { CustomInput } from "@/presentation/components/theme/CustomInput";
 import { CustomButton } from "@/presentation/components/theme/CustomButton";
-import { MyCheckbox } from "@/presentation/components/theme/CustomCheckbox";
 import { useSignUp } from "@/presentation/hooks/auth/signup/useSignUp";
 import { CustomFormView } from "@/presentation/components/theme/CustomFormView";
 import { Colors, Fonts } from "@/presentation/styles/global-styles";
+import { TermsAndConditions } from "@/presentation/components/TermsAndConditions/TermsAndConditions";
 
 const SingUp = () => {
   const {
     //Props
     top,
-    form,
 
-    //Methods
-    handleTermsClick,
-    handleModifyForm,
+    // //Methods
+    control,
     handleSubmit,
+    errors,
+    isSubmitting,
+    isDisabled,
+    handleTermsClick,
     Haptics,
+    handleSignUp,
   } = useSignUp();
 
   return (
@@ -32,60 +36,59 @@ const SingUp = () => {
 
         <View style={styles.containerInformation}>
           <CustomInput
-            label='Correo electronico'
+            name='email'
+            control={control}
             placeholder='ejemplo@google.com'
-            value={form.email}
-            onChangeText={(value) => handleModifyForm("email", value)}
+            label='Correo electrónico'
             iconRight='mail-outline'
             keyboardType='email-address'
+            errorMessage={errors.email?.message}
           />
           <CustomInput
-            label='Nombre de usuario'
+            name='username'
+            control={control}
             placeholder='Sam Smith'
-            value={form.username}
-            onChangeText={(value) => handleModifyForm("username", value)}
+            label='Nombre de usuario'
             iconRight='person-outline'
-            keyboardType='email-address'
+            keyboardType='name-phone-pad'
+            errorMessage={errors.username?.message}
           />
+
           <CustomInput
+            name='password'
+            control={control}
+            placeholder='*********'
             label='Contraseña'
-            placeholder='*********'
-            value={form.password}
-            onChangeText={(value) => handleModifyForm("password", value)}
             iconRight='eye-off-outline'
-            isPassword
+            keyboardType='visible-password'
+            secureTextEntry={true}
+            errorMessage={errors.password?.message}
           />
+
           <CustomInput
-            label='Repertir contraseña'
+            name='confirmPassword'
+            control={control}
             placeholder='*********'
-            value={form.confirmPassword}
-            onChangeText={(value) => handleModifyForm("confirmPassword", value)}
+            label='Repertir contraseña'
             iconRight='eye-off-outline'
-            isPassword
+            keyboardType='default'
+            secureTextEntry={true}
+            errorMessage={errors.confirmPassword?.message}
+          />
+          <TermsAndConditions
+            control={control}
+            Haptics={Haptics}
+            handleTermsClick={handleTermsClick}
+            errors={errors}
           />
 
-          <View style={[styles.terms]}>
-            <View style={styles.termsTextContainer}>
-              <Text style={styles.termText}>Acepto los</Text>
-              <Pressable onPress={handleTermsClick}>
-                <Text style={styles.termsLink}>términos y condiciones</Text>
-              </Pressable>
-            </View>
-            <MyCheckbox
-              onChange={() => {
-                Haptics.selectionAsync();
-                handleModifyForm("isChecked", !form.isChecked);
-              }}
-              checked={form.isChecked}
-            />
-          </View>
+          <CustomButton
+            label={isSubmitting ? "Ingresando..." : "Registrar"}
+            onPress={handleSubmit(handleSignUp)}
+            icon='football-outline'
+            disabled={isDisabled || isSubmitting}
+          />
         </View>
-
-        <CustomButton
-          label='Registrarse'
-          onPress={handleSubmit}
-          icon='football-outline'
-        />
       </View>
     </CustomFormView>
   );
@@ -133,32 +136,5 @@ const styles = StyleSheet.create({
     color: Colors.light,
     fontWeight: "bold",
     fontSize: 20,
-  },
-
-  terms: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    gap: 15,
-    zIndex: 2,
-  },
-
-  termsTextContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
-  },
-
-  termText: {
-    fontSize: Fonts.small + 2,
-    color: Colors.light,
-  },
-
-  termsLink: {
-    fontSize: Fonts.small + 2,
-    color: Colors.primary,
-    textDecorationLine: "underline",
   },
 });
