@@ -1,50 +1,84 @@
-# Welcome to your Expo app 👋
+# Proyecto Expo: Winnix 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este es un proyecto Expo creado con [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Get started
+## Empezando
 
-1. Install dependencies
+1.  **Instala las dependencias:**
 
-   ```bash
-   npm install
-   ```
+    ```bash
+    npm install
+    ```
 
-2. Start the app
+2.  **Levanta la aplicación:**
 
-   ```bash
+    ```bash
     npx expo start
-   ```
+    ```
 
-In the output, you'll find options to open the app in a
+    Esto abrirá el navegador con un código QR. Puedes escanearlo con:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+    - 📲 Expo Go en tu celular
+    - Simulador de Android o iOS en tu PC
+    - Dispositivo físico conectado a la misma red
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Conexión con el Backend (NestJS)
 
-## Get a fresh project
+La app cliente se comunica con el servidor NestJS. Asegúrate de que ambos estén conectados a la misma red WiFi.
 
-When you're ready, run:
+### 1. Configuración del servidor
 
-```bash
-npm run reset-project
+La IP debe ser la local de tu computadora (donde corre el backend).
+
+En tu archivo adaptador (ej: `auth.adapter.ts`), configura la IP de la siguiente manera:
+
+```typescript
+const API_BASE_URL = "http://197.0.0.0:7002/api"; // Reemplaza con tu IP
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 💡 Puedes obtener tu IP con:
 
-## Learn more
+- Windows: ipconfig
 
-To learn more about developing your project with Expo, look at the following resources:
+- Mac / Linux: ifconfig
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### ❌ ¡Importante! No uses localhost o 127.0.0.1 desde un celular, ya que apuntaría al dispositivo móvil y no al backend.
 
-## Join the community
+2. Verificación de la conexión
+   Puedes comprobar que el cliente se comunica con el backend usando este endpoint de prueba:
 
-Join our community of developers creating universal apps.
+🧪 Ruta:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```
+GET http://TU_IP:7002/api/test  // Reemplaza TU_IP con la IP de tu backend
+```
+
+💻 Código de prueba (en tu componente React Native):
+
+```
+import React, { useEffect } from 'react';
+import { View, Text } from 'react-native';
+
+const MiComponente = () => {
+  useEffect(() => {
+    fetch("http://192.168.1.20:7002/api/test") // Reemplaza con tu IP
+      .then((res) => res.json())
+      .then((data) => console.log("Respuesta del backend:", data))
+      .catch((err) => console.log("Error al conectar con el backend", err));
+  }, []);
+
+  return (
+    <View>
+      <Text>Verificando conexión con el backend...</Text>
+    </View>
+  );
+};
+
+export default MiComponente;
+```
+
+## Respuesta
+
+```
+{ "message": "Hello World! thiona" }
+```

@@ -1,61 +1,30 @@
-import { useState } from "react";
-import { Alert, Linking } from "react-native";
+import { Linking } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 
+import { useCustomForm } from "@/hooks/useCustomForm";
+import { SignUpFormData } from "@/presentation/types/SignUpData";
+import { signUpSchema } from "@/presentation/schemas/signUpSchema";
+import { authFetcher } from "@/services/auth.adapter";
+
 export const useSignUp = () => {
   const { top } = useSafeAreaInsets();
+  const { control, handleSubmit, errors, isSubmitting, isDisabled } =
+    useCustomForm<SignUpFormData>(signUpSchema);
 
-  const [form, setForm] = useState({
-    email: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
-    isChecked: false,
-  });
-
-  const handleModifyForm = (field: string, value: string | boolean) => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      [field]: value,
-    }));
-  };
-
-  const validateEmail = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(form.email);
-  };
-
-  const validateForm = () => {
-    if (
-      !form.email ||
-      !form.username ||
-      !form.password ||
-      !form.confirmPassword ||
-      !form.isChecked
-    ) {
-      Alert.alert("Campos incompletos", "Todos los campos deben estar llenos", [
-        { text: "Entendido" },
-      ]);
-      return;
+  const handleSignUp = async (formData: SignUpFormData) => {
+    try {
+      const { username, email, password } = formData;
+      const payload = {
+        username,
+        email,
+        password,
+      };
+      const response = await authFetcher.post("/auth/signup", payload);
+      //Todo redirect to welcome
+    } catch (error: any) {
+      console.log("error :>> ", error);
     }
-
-    const emailValidated = validateEmail();
-    console.log("emailValidated :>> ", emailValidated);
-    if (!emailValidated) {
-      Alert.alert(
-        "Correo incorrecto",
-        "Debe ingresar un correo valido, ejemplo: pepe@google.com",
-        [{ text: "Entendido" }]
-      );
-      return;
-    }
-  };
-
-  const handleSubmit = async () => {
-    await Haptics.selectionAsync();
-
-    validateForm();
   };
 
   const handleTermsClick = () => {
@@ -65,12 +34,15 @@ export const useSignUp = () => {
   return {
     //Props
     top,
-    form,
 
     //Methods
-    handleTermsClick,
-    handleModifyForm,
+    control,
     handleSubmit,
+    errors,
+    isSubmitting,
+    isDisabled,
+    handleTermsClick,
+    handleSignUp,
     Haptics,
   };
 };

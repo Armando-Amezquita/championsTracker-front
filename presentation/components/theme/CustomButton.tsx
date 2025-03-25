@@ -15,6 +15,7 @@ interface Props {
   onPress: () => void;
   stylePressable?: StyleProp<ViewStyle>;
   styleText?: StyleProp<TextStyle>;
+  disabled?: boolean;
 }
 
 export const CustomButton = ({
@@ -23,17 +24,24 @@ export const CustomButton = ({
   onPress,
   stylePressable,
   styleText,
+  disabled = false,
 }: Props) => {
   return (
     <Pressable
-      onPress={onPress}
+      onPress={!disabled ? onPress : undefined}
       style={({ pressed }) => [
         {
-          backgroundColor: pressed ? Colors.primary + "90" : Colors.primary,
+          backgroundColor: disabled
+            ? Colors.gray
+            : pressed
+            ? Colors.primary + "90"
+            : Colors.primary,
+          opacity: disabled ? 0.6 : 1,
         },
         styles.button,
         stylePressable,
-      ]}>
+      ]}
+      disabled={disabled}>
       <Text style={[styles.label, styleText]}>{label}</Text>
 
       {icon && (
