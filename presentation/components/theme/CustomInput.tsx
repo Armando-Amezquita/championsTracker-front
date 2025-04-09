@@ -1,17 +1,9 @@
 import { useRef, useState } from "react";
-import {
-  View,
-  Text,
-  TextInputProps,
-  StyleSheet,
-  TextInput,
-  KeyboardTypeOptions,
-  Platform,
-  TextStyle,
-} from "react-native";
+import { View, Text, TextInputProps, StyleSheet, TextInput, KeyboardTypeOptions, Platform, TextStyle } from "react-native";
 import { Controller } from "react-hook-form";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors, Fonts } from "../../styles/global-styles";
+
+import { Colors, ErrorMessage, Fonts } from "../../styles/global-styles";
 
 interface Props extends TextInputProps {
   label?: string;
@@ -50,16 +42,10 @@ export const CustomInput = ({
         render={({ field: { onChange, onBlur, value } }) => (
           <View
             style={{
-              borderColor: errorMessage
-                ? "#E97451"
-                : isActive
-                ? Colors.primary
-                : Colors.gray,
+              borderColor: errorMessage ? Colors.error : isActive ? Colors.primary : Colors.gray,
               ...styles.containerInput,
             }}>
-            {iconLeft && (
-              <Ionicons name={iconLeft} size={24} color={Colors.light} />
-            )}
+            {iconLeft && <Ionicons name={iconLeft} size={24} color={Colors.light} />}
             <TextInput
               ref={inputRef}
               placeholderTextColor={Colors.gray}
@@ -75,14 +61,12 @@ export const CustomInput = ({
               style={styles.input}
               {...rest}
             />
-            {iconRight && (
-              <Ionicons name={iconRight} size={24} color={Colors.light} />
-            )}
+            {iconRight && <Ionicons name={iconRight} size={24} color={Colors.light} />}
           </View>
         )}
       />
 
-      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
+      {errorMessage && <Text style={ErrorMessage}>{errorMessage}</Text>}
     </View>
   );
 };
@@ -111,10 +95,5 @@ const styles = StyleSheet.create({
     fontSize: Fonts.normal,
     color: Colors.light,
     fontWeight: "bold",
-  },
-  errorText: {
-    color: "#E97451",
-    fontSize: Fonts.small,
-    marginTop: 2,
   },
 });

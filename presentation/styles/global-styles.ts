@@ -9,6 +9,7 @@ export const Colors = {
   light: "#f4fefd",
   lightDark: "#cfdede",
   backgroundLight: "#202b2e",
+  error: "#ff5c5c",
 };
 
 export const Fonts = {
@@ -40,4 +41,10 @@ export const Padding = {
   medium: 15,
   big: 20,
   extraBig: 25,
+};
+
+export const ErrorMessage = {
+  color: Colors.error,
+  marginTop: 4,
+  fontSize: Fonts.small,
 };

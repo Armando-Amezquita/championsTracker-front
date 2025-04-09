@@ -1,14 +1,8 @@
 import { useState, useRef } from "react";
-import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  useWindowDimensions,
-  Animated,
-} from "react-native";
+import { View, Text, Pressable, StyleSheet, useWindowDimensions, Animated } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors, Fonts } from "@/presentation/styles/global-styles";
+
+import { Colors, ErrorMessage, Fonts } from "@/presentation/styles/global-styles";
 
 interface Props {
   title?: string;
@@ -16,6 +10,7 @@ interface Props {
   options: Option[];
   onSelectOption: (option: Option) => void;
   selectedOption?: Option;
+  error?: string;
 }
 
 interface Option {
@@ -23,13 +18,7 @@ interface Option {
   label: string;
 }
 
-export const CustomSelectOptions = ({
-  title,
-  label,
-  options,
-  onSelectOption,
-  selectedOption,
-}: Props) => {
+export const CustomSelectOptions = ({ title, label, options, onSelectOption, selectedOption, error }: Props) => {
   const [openOptions, setOpenOptions] = useState<boolean>(false);
   const animation = useRef(new Animated.Value(0)).current;
   const { width } = useWindowDimensions();
@@ -47,47 +36,38 @@ export const CustomSelectOptions = ({
   return (
     <View style={{ width: width * 0.9 }}>
       <Text style={styles.customSelectTitle}>{title}</Text>
-      <Pressable
-        onPress={toggleOptions}
-        style={({ pressed }) => [
-          styles.optionToggleButton,
-          { opacity: pressed ? 0.6 : 1 },
-        ]}>
-        <Text
-          style={{
-            color: selectedOption ? Colors.primary : Colors.lightDark,
-            fontSize: Fonts.normal,
-          }}>
-          {selectedOption ? selectedOption.label : label}
-        </Text>
-        <Ionicons
-          name={openOptions ? "chevron-up-outline" : "chevron-down-outline"}
-          size={24}
-          color={selectedOption ? Colors.primary : Colors.lightDark}
-        />
-      </Pressable>
-      <Animated.View
-        style={[
-          styles.animationContainer,
-          { height: animation },
-          { zIndex: openOptions ? 9999 : 0 },
-        ]}>
-        {options.map((option, index) => (
-          <Pressable
-            onPress={() => {
-              onSelectOption(option);
-              toggleOptions();
-            }}
-            key={index}
-            style={({ pressed }) => [
-              styles.option,
-              index !== options.length - 1 && styles.withBorder,
-              { opacity: pressed ? 0.6 : 1 },
-            ]}>
-            <Text style={styles.optionText}>{option.label}</Text>
-          </Pressable>
-        ))}
-      </Animated.View>
+      <View style={{ position: "relative" }}>
+        <Pressable onPress={toggleOptions} style={({ pressed }) => [styles.optionToggleButton, { opacity: pressed ? 0.6 : 1 }]}>
+          <Text
+            style={{
+              color: selectedOption ? Colors.primary : Colors.lightDark,
+              fontSize: Fonts.normal,
+            }}>
+            {selectedOption ? selectedOption.label : label}
+          </Text>
+          <Ionicons
+            name={openOptions ? "chevron-up-outline" : "chevron-down-outline"}
+            size={24}
+            color={selectedOption ? Colors.primary : Colors.lightDark}
+          />
+        </Pressable>
+
+        <Animated.View style={[styles.animationContainer, { height: animation, zIndex: openOptions ? 9999 : 0 }]}>
+          {options.map((option, index) => (
+            <Pressable
+              onPress={() => {
+                onSelectOption(option);
+                toggleOptions();
+              }}
+              key={index}
+              style={({ pressed }) => [styles.option, index !== options.length - 1 && styles.withBorder, { opacity: pressed ? 0.6 : 1 }]}>
+              <Text style={styles.optionText}>{option.label}</Text>
+            </Pressable>
+          ))}
+        </Animated.View>
+      </View>
+
+      {error && <Text style={ErrorMessage}>{error}</Text>}
     </View>
   );
 };

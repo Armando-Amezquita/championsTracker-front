@@ -1,36 +1,20 @@
 import { useState } from "react";
-import {
-  TextInput,
-  Pressable,
-  Platform,
-  StyleSheet,
-  View,
-  Text,
-} from "react-native";
-import Calendar, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
-import {
-  Colors,
-  Fonts,
-  Padding,
-  Radius,
-} from "@/presentation/styles/global-styles";
+import { TextInput, Pressable, Platform, StyleSheet, View, Text } from "react-native";
+import Calendar, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+
+import { Colors, ErrorMessage, Fonts, Padding, Radius } from "@/presentation/styles/global-styles";
 import { ChampionIcon } from "@/presentation/plugins/Icon";
 
 interface Props {
   label?: string;
-  selectedDate: Date;
+  selectedDate?: Date;
   onChangeDate: (date: Date) => void;
+  error?: string;
 }
 
-export const CustomCalendar = ({
-  label = "",
-  selectedDate,
-  onChangeDate,
-}: Props) => {
+export const CustomCalendar = ({ label = "", selectedDate, onChangeDate, error }: Props) => {
   const [showPicker, setShowPicker] = useState(false);
-  const [tempDate, setTempDate] = useState(selectedDate);
+  const [tempDate, setTempDate] = useState(selectedDate ?? new Date());
 
   const toggleDatePicker = () => setShowPicker(!showPicker);
 
@@ -52,7 +36,8 @@ export const CustomCalendar = ({
     toggleDatePicker();
   };
 
-  const formatDate = (date: Date): string => {
+  const formatDate = (date?: Date): string => {
+    if (!(date instanceof Date) || isNaN(date.getTime())) return "";
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
@@ -62,9 +47,7 @@ export const CustomCalendar = ({
   return (
     <View>
       <Text style={styles.customCalendarLabel}>{label}</Text>
-      <Pressable
-        style={styles.customCalendarPressable}
-        onPress={toggleDatePicker}>
+      <Pressable style={styles.customCalendarPressable} onPress={toggleDatePicker}>
         <TextInput
           style={styles.customCalendarInput}
           placeholder='31/12/2000'
@@ -75,13 +58,14 @@ export const CustomCalendar = ({
         />
         <ChampionIcon name='calendar-number-outline' />
       </Pressable>
+      {error && <Text style={ErrorMessage}>{error}</Text>}
 
       {showPicker && (
         <View style={styles.containerCalendar}>
           <Calendar
             mode='date'
             display='spinner'
-            value={Platform.OS === "ios" ? tempDate : selectedDate}
+            value={Platform.OS === "ios" ? tempDate : selectedDate ?? new Date()}
             onChange={handleDateChange}
             style={styles.calendar}
           />
@@ -95,9 +79,7 @@ export const CustomCalendar = ({
                   },
                   styles.calendarConfirm,
                 ]}>
-                <Text style={{ color: Colors.primary, fontSize: Fonts.normal }}>
-                  Seleccionar
-                </Text>
+                <Text style={{ color: Colors.primary, fontSize: Fonts.normal }}>Seleccionar</Text>
               </Pressable>
             </View>
           )}

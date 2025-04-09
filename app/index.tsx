@@ -18,7 +18,7 @@ const Index = () => {
       }
 
       if (!loading && userToken) {
-        router.replace("/auth/welcome");
+        router.replace("/auth/onboarding");
       }
     }
   }, [loading, userToken, isMounted]);
