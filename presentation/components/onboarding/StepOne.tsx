@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, useWindowDimensions, ScrollView } from "react-native";
-import { useEffect } from "react";
 import { Controller, Control, FieldErrors } from "react-hook-form";
 
 import { Colors, Fonts } from "@/presentation/styles/global-styles";
@@ -16,10 +15,9 @@ interface Option {
 interface StepOneProps {
   control: Control<any>;
   errors: FieldErrors<any>;
-  onValid: (isValid: boolean) => void;
 }
 
-export const StepOne = ({ control, errors, onValid }: StepOneProps) => {
+export const StepOne = ({ control, errors }: StepOneProps) => {
   const { width } = useWindowDimensions();
   const stepOneErrors = errors?.stepOne as FieldErrors<OnboardingForm["stepOne"]>;
 
@@ -32,11 +30,6 @@ export const StepOne = ({ control, errors, onValid }: StepOneProps) => {
   const handleSelectOption = (option: Option, onChange: (value: string) => void) => {
     onChange(option.label);
   };
-
-  useEffect(() => {
-    const hasErrors = Object.keys(errors?.stepOne ?? {}).length > 0;
-    onValid(!hasErrors);
-  }, [errors]);
 
   return (
     <ScrollView style={[styles.stepOneContainer, { width }]}>

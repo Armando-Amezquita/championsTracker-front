@@ -15,19 +15,16 @@ export const useLogin = () => {
   const { login } = useAuth();
   const navigate = useRouter();
 
-  const { control, handleSubmit, errors, isSubmitting, isDisabled } =
-    useCustomForm<LoginFormData>(loginSchema);
+  const { control, handleSubmit, errors, isSubmitting, isDisabled } = useCustomForm<LoginFormData>(loginSchema);
 
   const handleLogin = async (payload: LoginFormData) => {
     try {
-      const { token } = await authFetcher.post<LoginResponse>(
-        "/auth/login-email",
-        payload
-      );
+      const { token } = await authFetcher.post<LoginResponse>("/auth/login-email", payload);
+      console.log("token :>> ", token);
 
       if (token.length) {
         await login(token);
-        navigate.push("/auth/welcome");
+        navigate.push("/auth/onboarding");
       } else {
         // TOdo error de autenticación (mostrar un mensaje de error.)
         console.log("Error de autenticación");

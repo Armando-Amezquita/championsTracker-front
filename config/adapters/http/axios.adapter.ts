@@ -30,11 +30,7 @@ export class AxiosAdapter implements HttpAdapter {
     }
   }
 
-  async post<T>(
-    url: string,
-    body: unknown,
-    options?: Record<string, unknown>
-  ): Promise<T> {
+  async post<T>(url: string, body: unknown, options?: Record<string, unknown>): Promise<T> {
     try {
       const { data } = await this.axiosInstance.post(url, body, options);
       return data;
@@ -43,6 +39,18 @@ export class AxiosAdapter implements HttpAdapter {
         throw error.response.data;
       }
       throw new Error(`Error fetching POST: ${url}`);
+    }
+  }
+
+  async put<T>(url: string, body: unknown, options?: Record<string, unknown>): Promise<T> {
+    try {
+      const { data } = await this.axiosInstance.put(url, body, options);
+      return data;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        throw error.response.data;
+      }
+      throw new Error(`Error fetching PUT: ${url}`);
     }
   }
 }

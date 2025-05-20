@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { MainContainerView } from "@/presentation/components/theme/MainContainerView";
 import { CustomButton } from "@/presentation/components/theme/CustomButton";
-import { ChampionIcon } from "@/presentation/plugins/Icon";
 import { Colors } from "@/presentation/styles/global-styles";
+import { MyLogoImage } from "@/assets/winnixLogo/winnixIso";
 
 const AuthLayout = () => {
   const navigation = useRouter();
@@ -11,20 +11,14 @@ const AuthLayout = () => {
   return (
     <MainContainerView>
       <View style={styles.welcome}>
-        <View style={styles.welcomeHeader}>
-          <Text style={styles.welcomeBrand}>ChampionsTracker</Text>
-          <ChampionIcon name='star-half-outline' size={200} />
-        </View>
+        <MyLogoImage size={300} />
         <View style={styles.welcomeActions}>
-          <CustomButton
-            label='Ingresar'
-            onPress={() => navigation.push("/auth/login")}
-            styleProp={styles.welcomeButtons}
-          />
+          <CustomButton label='Ingresar' onPress={() => navigation.push("/auth/login")} stylePressable={styles.welcomeButtons} styleText={styles.test} />
           <CustomButton
             label='Registrarse'
             onPress={() => navigation.push("/auth/singup")}
-            styleProp={[styles.welcomeButtons, styles.welcomeRegister]}
+            stylePressable={[styles.welcomeButtons, styles.welcomeRegister]}
+            styleText={styles.test}
           />
         </View>
       </View>
@@ -41,27 +35,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
-  welcomeHeader: {
-    alignItems: "center",
-    width: "100%",
-    gap: 40,
-  },
-  welcomeBrand: {
-    fontSize: 40,
-    color: Colors.primary,
-    fontStyle: "italic",
-    fontWeight: "bold",
-  },
   welcomeActions: {
     width: "100%",
     flexDirection: "column",
     gap: 20,
   },
   welcomeRegister: {
-    backgroundColor: Colors.light,
+    borderColor: Colors.primary,
+    backgroundColor: Colors.dark,
+    borderWidth: 2,
   },
   welcomeButtons: {
     height: 60,
     borderRadius: 40,
+    borderColor: Colors.primary,
+    backgroundColor: Colors.dark,
+    borderWidth: 2,
+  },
+  test: {
+    color: Colors.light,
   },
 });

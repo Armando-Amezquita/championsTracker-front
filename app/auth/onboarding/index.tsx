@@ -1,69 +1,39 @@
-import { useEffect, useRef, useState } from "react";
-import { View, Text, FlatList, useWindowDimensions, Animated, StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
+import { View, FlatList, Animated, StyleSheet } from "react-native";
+
 import { MainContainerView } from "@/presentation/components/theme/MainContainerView";
 import { CustomButton } from "@/presentation/components/theme/CustomButton";
 import { FrontSlide } from "@/presentation/components/getAdditionalInformationUser/FrontSlide";
 import { StepOne } from "@/presentation/components/onboarding/StepOne";
 import { StepTwo } from "@/presentation/components/onboarding/StepTwo";
-import { useCustomForm } from "@/hooks/useCustomForm";
-import { onboardingSchema, OnboardingForm } from "@/presentation/schemas/onBoarding";
-
-const getAllInformationUserItems = [
-  { id: "1", name: "Slide 1" },
-  { id: "2", name: "Slide 2" },
-  { id: "3", name: "Slide 3" },
-];
+import { useOnboarding } from "@/presentation/hooks/auth/onboarding/useOnboarding";
 
 const OnBoarding = () => {
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const flatListRef = useRef<FlatList>(null);
-  const navigate = useRouter();
-  const { width } = useWindowDimensions();
-  const opacity = useRef(new Animated.Value(1)).current;
+  const {
+    //Properties
+    getAllInformationUserItems,
+    currentSlideIndex,
+    flatListRef,
+    opacity,
+    width,
 
-  const { control, handleSubmit, errors, isSubmitting, isDisabled, watch, trigger } = useCustomForm<OnboardingForm>(onboardingSchema);
-
-  const [isStepOneValid, setIsStepOneValid] = useState(false);
-
-  const scrollToSlide = (index: number) => {
-    if (!flatListRef.current) return;
-    flatListRef.current.scrollToIndex({ index, animated: true });
-    setTimeout(() => setCurrentSlideIndex(index), 300);
-  };
-
-  const handleStepOneValidation = (isValid: boolean) => {
-    setIsStepOneValid(isValid);
-  };
-
-  const handleNextStep = async () => {
-    if (currentSlideIndex === 1) {
-      const isValid = await trigger(["stepOne.documentType", "stepOne.documentNumber", "stepOne.birthDate"]);
-      console.log("isValid :>> ", isValid);
-      if (!isValid) return;
-    }
-    scrollToSlide(currentSlideIndex + 1);
-  };
+    //Methods
+    handleNextStep,
+    scrollToSlide,
+    handleSendInformation,
+    control,
+    handleSubmit,
+    errors,
+    isSubmitting,
+    isDisabled,
+  } = useOnboarding();
 
   const renderItem = ({ index }: { index: number }) => (
     <Animated.View style={{ width, opacity }}>
       {index === 0 && <FrontSlide />}
-      {index === 1 && <StepOne control={control} errors={errors} onValid={handleStepOneValidation} />}
-      {index === 2 && <StepTwo control={control} errors={errors} onValid={handleStepOneValidation} />}
+      {index === 1 && <StepOne control={control} errors={errors} />}
+      {index === 2 && <StepTwo control={control} errors={errors} />}
     </Animated.View>
   );
-
-  const selectedDocumentType = watch("stepOne.documentType");
-
-  const onSubmit = (data: OnboardingForm) => {
-    console.log("Valores del formulario:", data);
-  };
-
-  const watchedValues = watch();
-
-  useEffect(() => {
-    console.log("Valores actuales del formulario:", watchedValues);
-  }, [watchedValues]);
 
   return (
     <MainContainerView>
@@ -81,19 +51,17 @@ const OnBoarding = () => {
         {currentSlideIndex === getAllInformationUserItems.length - 1 ? (
           <>
             <CustomButton label='Anterior' onPress={() => scrollToSlide(currentSlideIndex - 1)} stylePressable={style.back} />
-            <CustomButton label='Finalizar' onPress={() => navigate.replace("/tabs/dashboard")} stylePressable={style.next} />
+            <CustomButton
+              label={isSubmitting ? "Cargado.." : "Finalizar"}
+              onPress={handleSubmit(handleSendInformation)}
+              stylePressable={style.next}
+              disabled={isDisabled || isSubmitting}
+            />
           </>
         ) : (
           <>
-            {currentSlideIndex >= 1 && (
-              <CustomButton label='Anterior' onPress={() => scrollToSlide(currentSlideIndex - 1)} stylePressable={style.back} />
-            )}
-            <CustomButton
-              label='Siguiente'
-              onPress={handleNextStep}
-              // onPress={() => scrollToSlide(currentSlideIndex + 1)}
-              stylePressable={style.next}
-            />
+            {currentSlideIndex >= 1 && <CustomButton label='Anterior' onPress={() => scrollToSlide(currentSlideIndex - 1)} stylePressable={style.back} />}
+            <CustomButton label='Siguiente' onPress={handleNextStep} stylePressable={style.next} />
           </>
         )}
       </View>

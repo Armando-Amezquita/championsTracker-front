@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 
 import { CustomInput } from "@/presentation/components/theme/CustomInput";
 import { CustomButton } from "@/presentation/components/theme/CustomButton";
@@ -23,11 +22,6 @@ const Login = () => {
   return (
     <CustomFormView>
       <View style={styles.view}>
-        <Ionicons
-          name='american-football-outline'
-          size={70}
-          color={Colors.light}
-        />
         <Text style={styles.title}>Bienvenid@</Text>
 
         <CustomInput
@@ -50,11 +44,7 @@ const Login = () => {
           errorMessage={errors.password?.message}
         />
 
-        <CustomLink
-          label='Recordar contraseña'
-          href='/'
-          style={styles.rememberPassword}
-        />
+        <CustomLink label='Recordar contraseña' href='/' style={styles.rememberPassword} />
 
         <CustomButton
           label={isSubmitting ? "Ingresando..." : "Ingresar"}
@@ -90,8 +80,8 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
   rememberPassword: {
-    width: "100%",
-    textAlign: "right",
+    width: "auto",
+    alignSelf: "flex-end",
   },
   signUpContainer: {
     display: "flex",
